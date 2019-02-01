@@ -13,7 +13,7 @@ namespace sampleFactCsharp.BattleshipAPI
         private static readonly HttpClient client = new HttpClient();
         
         // API URL info
-        public static string HOST = @"http://ec2-52-68-115-158.ap-northeast-1.compute.amazonaws.com";
+        public static string HOST = @"http://ec2-52-198-58-98.ap-northeast-1.compute.amazonaws.com";
         public static string PORT = @"3001";
         public static string API = @"/api/player/";
         public static string URL = HOST + ":" + PORT + API;
@@ -25,11 +25,8 @@ namespace sampleFactCsharp.BattleshipAPI
         public static string RIGHT = URL + @"{0}/move/right";
 
         // register
-        public static string REGISTER = URL + @"/add/{0}";
-
-
+        public static string REGISTER = URL + @"add/{0}";
         
-
         /// <summary>
         /// simple get request. 
         /// returns the response as a string
@@ -48,6 +45,11 @@ namespace sampleFactCsharp.BattleshipAPI
 
                 return result;
             }
+        }
+
+        public static string Append(this string a, string b)
+        {
+            return String.Format(a, b);
         }
     }
 }

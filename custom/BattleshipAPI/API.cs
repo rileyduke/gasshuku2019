@@ -8,6 +8,7 @@ namespace sampleFactCsharp.BattleshipAPI
     public class API
     {
         private ILambdaContext context { get; set; }
+        private string _playerId { get; set; }
 
         public API(ILambdaContext ctx)
         {
@@ -22,17 +23,33 @@ namespace sampleFactCsharp.BattleshipAPI
         /// <summary>
         /// move right
         /// </summary>
-        /// <param name="player_id"></param>
-        public void MoveRight(string player_id)
+        public void MoveRight()
         {
-            try
-            {
-                APIHelper.Get(APIHelper.RIGHT);
-            }
-            catch (Exception e)
-            {
-                this.Log(e.Message);
-            }
+            var r = this.ApiGet(APIHelper.RIGHT);
+        }
+
+        /// <summary>
+        /// move left
+        /// </summary>
+        public void MoveLeft()
+        {
+            var r = this.ApiGet(APIHelper.LEFT);
+        }
+
+        /// <summary>
+        /// move up
+        /// </summary>
+        public void MoveUp()
+        {
+            var r = this.ApiGet(APIHelper.UP);
+        }
+
+        /// <summary>
+        /// move down
+        /// </summary>
+        public void MoveDown()
+        {
+            var r = this.ApiGet(APIHelper.DOWN);
         }
 
         /// <summary>
@@ -44,9 +61,28 @@ namespace sampleFactCsharp.BattleshipAPI
         {
             try
             {
-                return APIHelper.Get(String.Format(APIHelper.REGISTER, player_name));
+                this._playerId = APIHelper.Get(String.Format(APIHelper.REGISTER, player_name));
             }
             catch (Exception e)
+            {
+                this.Log(e.Message);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// adds the player id to the string and then gets the URL
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        private string ApiGet(string uri)
+        {
+            try
+            {
+                return APIHelper.Get(uri.Append(_playerId));
+            }
+            catch(Exception e)
             {
                 this.Log(e.Message);
             }

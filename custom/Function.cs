@@ -18,13 +18,6 @@ namespace sampleFactCsharp
     {
         private SkillResponse response = null;
         private ILambdaContext context = null;
-        const string LOCALENAME = "locale";
-        const string USA_Locale = "en-US";
-        const string PLANETS = "Planet";
-        const string DEPARTINGPLANET = "DepartingPlanet";
-        const string ARRIVINGPLANET  = "ArrivingPlanet";
-
-        static Random rand = new Random();
 
         // API object
         private API _api { get; set; }
@@ -39,12 +32,15 @@ namespace sampleFactCsharp
         {
             context = ctx;
             this._api = new API(ctx);
+            _api.RegisterPlayer("Riley");
 
-            //var PlayerId = _api.RegisterPlayer("RILEYRILEY");
-            //_api.MoveRightTest(PlayerId);
+            this.Log(APIHelper.URL);
+
+            var PlayerId = "";
+
             if (input.Request.Type.Equals(AlexaConstants.LaunchRequest))
             {
-                _api.LogTest("Riley test");
+                _api.LogTest(PlayerId);
             }
             else if (input.Request.Type.Equals(AlexaConstants.SessionEndedRequest))
             {
@@ -54,9 +50,22 @@ namespace sampleFactCsharp
             {
                 _api.LogTest(input.Request.Type);
             }
-                
-            
+
+            // ƒGƒ“ƒh
             return null; 
+        }
+
+        /// <summary>
+        /// logger interface
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns>void</returns>
+        private void Log(string text)
+        {
+            if (context != null)
+            {
+                context.Logger.LogLine(text);
+            }
         }
     }
 }
