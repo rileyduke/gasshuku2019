@@ -18,13 +18,14 @@ namespace sampleFactCsharp.BattleshipAPI
         public API(ILambdaContext ctx)
         {
             this.context = ctx;
-            _client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+            _client = new HttpClient();
             _client.BaseAddress = new Uri(APIHelper.HOST + ":" + APIHelper.PORT + "/api/");
-
-            //_client.BaseAddress = new Uri("http://localhost:64195/");
             _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
+            _client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9,ja;q=0.8");
+            _client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+            //_client.DefaultRequestHeaders.Add("Content-Type", "application/json; charset=utf-8");
         }
 
         public void LogTest(string log)
@@ -75,10 +76,31 @@ namespace sampleFactCsharp.BattleshipAPI
             {
                 //this.Log(String.Format(APIHelper.REGISTER, player_name));
                 this._playerId = await this.Get("player/add/riley2");
+                this.Log(_playerId);
+                //using (var client = new HttpClient())
+                //{
+                //    //client.DefaultRequestHeaders
+                //    //  .Accept
+                //    //  .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //    //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+
+                //    var result = await client
+                //        .GetAsync(@"http://ec2-54-238-173-103.ap-northeast-1.compute.amazonaws.com:3001/api/player/add/Riley")
+                //        ;
+                //    //result
+                //    //    .Content
+                //    //    .Headers
+                //    //    .ContentType = new MediaTypeHeaderValue("application/octet-stream");
+
+
+
+                //    this.Log(result.ToString());
+                //}
             }
             catch (Exception e)
             {
-                this.Log(e.Message);
+                this.Log("error: " + e.Message);
             }
 
             return null;
@@ -113,11 +135,14 @@ namespace sampleFactCsharp.BattleshipAPI
         {
             this.Log(this._client.BaseAddress.ToString());
             this.Log(uri);
+            
+            HttpResponseMessage response = await _client.GetAsync(uri);
 
-            HttpResponseMessage response = _client.GetAsync(uri).Result;
-            response.EnsureSuccessStatusCode();
-            string result = response.Content.ReadAsStringAsync().Result;
-
+            string result = "";
+            if (response.IsSuccessStatusCode)
+            {
+                result = response.Content.ReadAsStringAsync().Result;
+            }
             return result;
         }
 
@@ -133,5 +158,6 @@ namespace sampleFactCsharp.BattleshipAPI
                 context.Logger.LogLine(text);
             }
         }
+        
     }
 }
