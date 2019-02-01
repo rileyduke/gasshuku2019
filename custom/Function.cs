@@ -8,6 +8,7 @@ using AlexaAPI.Response;
 using System.IO;
 using System.Text.RegularExpressions;
 using sampleFactCsharp.BattleshipAPI;
+using System.Threading.Tasks;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializerAttribute(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -22,29 +23,29 @@ namespace sampleFactCsharp
         // API object
         private API _api { get; set; }
 
+        private string teststring { get; set; }
+
         /// <summary>
         /// Application entry point
         /// </summary>
         /// <param name="input"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext ctx)
+        public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext ctx)
         {
             context = ctx;
-            this._api = new API(ctx);
-            _api.RegisterPlayer("Riley");
-
-            this.Log(APIHelper.URL);
-
-            var PlayerId = "";
-
+            
             if (input.Request.Type.Equals(AlexaConstants.LaunchRequest))
             {
-                _api.LogTest(PlayerId);
+                // Alexa register!
+                this._api = new API(ctx);
+                this.Log(APIHelper.URL);
+                this.Log(await _api.RegisterPlayer("Riley"));
             }
             else if (input.Request.Type.Equals(AlexaConstants.SessionEndedRequest))
             {
                 _api.LogTest("cancel intent");
+                this.teststring = "BLA BLA2";
             }
             else
             {

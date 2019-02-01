@@ -13,7 +13,7 @@ namespace sampleFactCsharp.BattleshipAPI
         private static readonly HttpClient client = new HttpClient();
         
         // API URL info
-        public static string HOST = @"http://ec2-52-198-58-98.ap-northeast-1.compute.amazonaws.com";
+        public static string HOST = @"http://ec2-54-238-173-103.ap-northeast-1.compute.amazonaws.com";
         public static string PORT = @"3001";
         public static string API = @"/api/player/";
         public static string URL = HOST + ":" + PORT + API;
@@ -38,7 +38,7 @@ namespace sampleFactCsharp.BattleshipAPI
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
             {
                 client.BaseAddress = new Uri(uri);
-                HttpResponseMessage response = client.GetAsync("answers?order=desc&sort=activity&site=stackoverflow").Result;
+                HttpResponseMessage response = client.GetAsync("").Result;
                 response.EnsureSuccessStatusCode();
                 string result = response.Content.ReadAsStringAsync().Result;
                 //Console.WriteLine("Result: " + result);
