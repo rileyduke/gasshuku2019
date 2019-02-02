@@ -33,6 +33,11 @@ namespace sampleFactCsharp.BattleshipAPI
             this.Log(log);
         }
 
+        public void DoAction(string ACTION)
+        {
+            var r = this.ApiGet(ACTION);
+        }
+
         /// <summary>
         /// move right
         /// </summary>
@@ -74,29 +79,9 @@ namespace sampleFactCsharp.BattleshipAPI
         {
             try
             {
-                //this.Log(String.Format(APIHelper.REGISTER, player_name));
-                this._playerId = await this.Get("player/add/riley2");
+                var resp = await this.Get(String.Format("player/add/{0}",player_name));
+                this._playerId = resp.Split(',')[1].Split(':')[1].Replace("\"", "").Replace("}","");
                 this.Log(_playerId);
-                //using (var client = new HttpClient())
-                //{
-                //    //client.DefaultRequestHeaders
-                //    //  .Accept
-                //    //  .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                //    //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
-
-                //    var result = await client
-                //        .GetAsync(@"http://ec2-54-238-173-103.ap-northeast-1.compute.amazonaws.com:3001/api/player/add/Riley")
-                //        ;
-                //    //result
-                //    //    .Content
-                //    //    .Headers
-                //    //    .ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-
-
-                //    this.Log(result.ToString());
-                //}
             }
             catch (Exception e)
             {
@@ -115,6 +100,7 @@ namespace sampleFactCsharp.BattleshipAPI
         {
             try
             {
+                this.Log(uri.Append(_playerId));
                 return APIHelper.Get(uri.Append(_playerId));
             }
             catch(Exception e)

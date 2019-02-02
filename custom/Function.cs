@@ -34,23 +34,49 @@ namespace sampleFactCsharp
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext ctx)
         {
             context = ctx;
+            try
+            {
+                response = new SkillResponse();
+                response.Response = new ResponseBody();
+                response.Response.ShouldEndSession = false;
+                response.Version = AlexaConstants.AlexaVersion;
+
+                if (input.Request.Type.Equals("testintent") || input.Request.Type.Equals(AlexaConstants.LaunchRequest))
+                {
+                    // Alexa register!
+                    this._api = new API(ctx);
+                    this.Log(APIHelper.URL);
+                    this.Log(await _api.RegisterPlayer("Riley"));
+
+                    IOutputSpeech innerResponse = new SsmlOutputSpeech();
+                    (innerResponse as SsmlOutputSpeech).Ssml = "launch message";
+                    response.Response.OutputSpeech = innerResponse;
+                    IOutputSpeech prompt = new PlainTextOutputSpeech();
+                    (prompt as PlainTextOutputSpeech).Text = "tsetsetsetset";
+                    response.Response.Reprompt = new Reprompt()
+                    {
+                        OutputSpeech = prompt
+                    };
+
+                }
+                else if (input.Request.Type.Equals(AlexaConstants.SessionEndedRequest))
+                {
+                    _api.LogTest("move right");
+                    _api.DoAction(APIHelper.RIGHT);
+                }
+                else
+                {
+                    _api.LogTest(input.Request.Type);
+                }
+
+                return response;
+            }
+            catch(Exception e)
+            {
+                this.Log(e.Message);
+            }
+
             
-            if (input.Request.Type.Equals(AlexaConstants.LaunchRequest))
-            {
-                // Alexa register!
-                this._api = new API(ctx);
-                this.Log(APIHelper.URL);
-                this.Log(await _api.RegisterPlayer("Riley"));
-            }
-            else if (input.Request.Type.Equals(AlexaConstants.SessionEndedRequest))
-            {
-                _api.LogTest("cancel intent");
-                this.teststring = "BLA BLA2";
-            }
-            else
-            {
-                _api.LogTest(input.Request.Type);
-            }
 
             // ƒGƒ“ƒh
             return null; 

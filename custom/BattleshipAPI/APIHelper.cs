@@ -24,6 +24,18 @@ namespace sampleFactCsharp.BattleshipAPI
         public static string DOWN = URL + @"{0}/move/down";
         public static string RIGHT = URL + @"{0}/move/right";
 
+        // turn
+        public static string TURN_LEFT = URL + @"{0}/turn/left";
+        public static string TURN_RIGHT = URL + @"{0}/turn/right";
+        public static string wARP = URL + @"{0}/warp";
+
+        // battle
+        public static string FIRE = URL + @"{0}/fire";
+        public static string FIX_ENGINE = URL + @"{0}/fix/engine";
+        public static string FIX_ARM = URL + @"{0}/fix/arm";
+        public static string FIX_THRUSTER = URL + @"{0}/fix/thruster";
+        public static string CANCEL_ACTIONS = URL + @"{0}/cancelactions";
+
         // register
         public static string REGISTER = URL + @"add/{0}";
         
