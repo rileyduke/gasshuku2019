@@ -14,7 +14,7 @@ namespace sampleFactCsharp.BattleshipAPI
         
         // API URL info
         public static string HOST = @"http://ec2-54-238-173-103.ap-northeast-1.compute.amazonaws.com";
-        public static string PORT = @"3001";
+        public static string PORT = @"3003";
         public static string API = @"/api/player/";
         public static string URL = HOST + ":" + PORT + API;
 
@@ -35,6 +35,26 @@ namespace sampleFactCsharp.BattleshipAPI
         public static string FIX_ARM = URL + @"{0}/fix/arm";
         public static string FIX_THRUSTER = URL + @"{0}/fix/thruster";
         public static string CANCEL_ACTIONS = URL + @"{0}/cancelactions";
+
+        //intents
+        public static string INTENT_LEFT = "left";
+        public static string INTENT_UP = "up";
+        public static string INTENT_DOWN = "downaction";
+        public static string INTENT_RIGHT = "right";
+
+        public static string INTENT_TURN_LEFT = "turn_left";
+        public static string INTENT_TURN_RIGHT = "turn_right";
+        public static string INTENT_wARP = "warp";
+
+        public static string INTENT_FIRE = "fire";
+        public static string INTENT_FIX_ENGINE = "fix_engine";
+        public static string INTENT_FIX_ARM = "fix_arm";
+        public static string INTENT_FIX_THRUSTER = "fix_thruster";
+        public static string INTENT_CANCEL_ACTIONS = "cancel_actions";
+
+        public static string INTENT_REGISTER = "register";
+
+        // intents
 
         // register
         public static string REGISTER = URL + @"add/{0}";

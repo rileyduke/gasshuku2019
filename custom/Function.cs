@@ -36,33 +36,96 @@ namespace sampleFactCsharp
             context = ctx;
             try
             {
+                this.Log("1");
                 response = new SkillResponse();
                 response.Response = new ResponseBody();
                 response.Response.ShouldEndSession = false;
                 response.Version = AlexaConstants.AlexaVersion;
-
-                if (input.Request.Type.Equals("testintent") || input.Request.Type.Equals(AlexaConstants.LaunchRequest))
+                this.Log("2");
+                if (input.Request.Type == AlexaConstants.LaunchRequest)
                 {
+                    this.Log("3");
                     // Alexa register!
                     this._api = new API(ctx);
+                    this.Log("4");
                     this.Log(APIHelper.URL);
                     this.Log(await _api.RegisterPlayer("Riley"));
+                    this.Log("5");
 
-                    IOutputSpeech innerResponse = new SsmlOutputSpeech();
-                    (innerResponse as SsmlOutputSpeech).Ssml = "launch message";
-                    response.Response.OutputSpeech = innerResponse;
-                    IOutputSpeech prompt = new PlainTextOutputSpeech();
-                    (prompt as PlainTextOutputSpeech).Text = "tsetsetsetset";
-                    response.Response.Reprompt = new Reprompt()
-                    {
-                        OutputSpeech = prompt
-                    };
+                    //IOutputSpeech innerResponse = new SsmlOutputSpeech();
+                    //(innerResponse as SsmlOutputSpeech).Ssml = "launch message";
+                    //response.Response.OutputSpeech = innerResponse;
+                    //IOutputSpeech prompt = new PlainTextOutputSpeech();
+                    //(prompt as PlainTextOutputSpeech).Text = "test";
+                    //response.Response.Reprompt = new Reprompt()
+                    //{
+                    //    OutputSpeech = prompt
+                    //};
 
                 }
-                else if (input.Request.Type.Equals(AlexaConstants.SessionEndedRequest))
+                else if (input.Request.Type == AlexaConstants.IntentRequest)
                 {
-                    _api.LogTest("move right");
-                    _api.DoAction(APIHelper.RIGHT);
+                    if(input.Request.Intent.Name == APIHelper.INTENT_REGISTER)
+                    {
+                        // Alexa register!
+                        this._api = new API(ctx);
+                        this.Log(APIHelper.URL);
+                        this.Log(await _api.RegisterPlayer("Riley"));
+                    }
+                    else if (input.Request.Intent.Name == "testintent")
+                    {
+                        this._api.DoAction(APIHelper.RIGHT);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_LEFT)
+                    {
+                        this._api.DoAction(APIHelper.LEFT);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_UP)
+                    {
+                        this._api.DoAction(APIHelper.UP);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_DOWN)
+                    {
+                        this._api.DoAction(APIHelper.DOWN);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_RIGHT)
+                    {
+                        this._api.DoAction(APIHelper.RIGHT);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_TURN_LEFT)
+                    {
+                        this._api.DoAction(APIHelper.TURN_LEFT);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_TURN_RIGHT)
+                    {
+                        this._api.DoAction(APIHelper.TURN_RIGHT);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_wARP)
+                    {
+                        this._api.DoAction(APIHelper.wARP);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_FIRE)
+                    {
+                        this._api.DoAction(APIHelper.FIRE);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_FIX_ENGINE)
+                    {
+                        this._api.DoAction(APIHelper.FIX_ENGINE);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_FIX_ARM)
+                    {
+                        this._api.DoAction(APIHelper.FIX_ARM);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_FIX_THRUSTER)
+                    {
+                        this._api.DoAction(APIHelper.FIX_THRUSTER);
+                    }
+                    else if (input.Request.Intent.Name == APIHelper.INTENT_CANCEL_ACTIONS)
+                    {
+                        this._api.DoAction(APIHelper.CANCEL_ACTIONS);
+                    }
+                    // _api.LogTest("move right");
+                    //_api.DoAction(APIHelper.RIGHT);
                 }
                 else
                 {
